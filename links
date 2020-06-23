@@ -1,0 +1,13 @@
+Within polygon
+-https://automating-gis-processes.github.io/CSC18/lessons/L4/point-in-polygon.html
+-https://gis.stackexchange.com/questions/208546/check-if-a-point-falls-within-a-multipolygon-with-python
+
+
+
+Multipolygon
+-https://gis.stackexchange.com/questions/112095/converting-huge-multipolygon-to-polygons/112138#112138
+
+
+Coordenadas
+-https://stackoverflow.com/questions/47203938/convert-the-coordinates-of-a-shapefile-in-geopandas
+-https://gis.stackexchange.com/questions/78838/converting-projected-coordinates-to-lat-lon-using-python
