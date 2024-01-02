@@ -11,7 +11,7 @@ This repository supports our research on spatial data analysis in IoT environmen
 - `[PhD]TimeSeries.ipynb`: Time series analysis of sensor data (Future works).
 - Additional scripts for data processing and analysis.
 - `model_raster.tif`: Sample raster data.
-- `data` folder: Contains the results of our experiments along with additional data that informed the methodology and decisions regarding the experiments.
+- `data` folder: Contains the results of our experiments along with additional data (`Additional_data_link`) that supported the methodology and decisions regarding the experiments.
 
 ## Research Paper
 Details in our paper: in progress...

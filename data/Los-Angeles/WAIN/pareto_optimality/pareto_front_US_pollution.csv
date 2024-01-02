@@ -1,0 +1,5 @@
+"areal.unit","attr","global.moran.i","global.pvalue.moran.i","local.moran.i.mean","local.moran.i.median","local.moran.i.sd","local.moran.i.cvar","high(global.moran.i)","low(local.moran.i.cvar)","low(local.moran.i.cvar) * high(global.moran.i)"
+"10-1km","AQI",0.74843702041855,0.001,0.7484,0.3385,0.9066,1.2114,1,2,1
+"10-2km","AQI",0.65731962425612,0.001,0.6573,0.3105,0.9427,1.4342,2,3,2
+"10-0km","AQI",0.0698109920426747,0.065,0.0698,0.0705,0.5364,7.6848,3,4,3
+"10-3km","AQI",-0.257988471828374,0.999,-0.258,-0.2979,0.2556,0.9907,4,1,1
