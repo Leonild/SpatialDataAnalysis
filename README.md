@@ -12,8 +12,10 @@ This repository supports our research on spatial data analysis in IoT environmen
 - Additional scripts for data processing and analysis.
 - `model_raster.tif`: Sample raster data.
 - `data` folder: Contains the results of our experiments along with additional data that informed the methodology and decisions regarding the experiments.
+
 ## Research Paper
-Details in our paper: in progress
+Details in our paper: in progress...
+
 Previous paper: [MDPI](https://www.mdpi.com/1424-8220/22/5/1693)
 
 ## Objective
