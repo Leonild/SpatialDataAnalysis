@@ -1,10 +1,10 @@
 ## Authors: Leonildo (adapted from Sidgley)
-## Date: 2023-01-01
+## Date: 2020-01-29
 ## Ph.D. Leonildo
 
 
 # define path of the current script
-path = "/data/doutorado-leonildo/data/Los-Angeles/WAIN/"  # (for example)
+path = "/data/doutorado-leonildo/data/O3-2019/US/"  # (for example)
 setwd(path)
 
 # read raster data
@@ -46,7 +46,7 @@ global.autocorrelation <- function(data, grid, nbwl, normalized) {
     grid.clone@data = left_join(x = grid@data, 
                                 y = data[, c('w', attr)], 
                                 by = c("ID"="w"))
-      
+    
     grid.clone@data[is.na(grid.clone@data[[attr]]), attr] <- 0
     
     res.statistics = lapply(nbwl, function(listw) { 
@@ -182,8 +182,7 @@ run.autocorrelation <- function(data, grid, folder, output.files) {
   
   # spatial weight matrix
   nbwl = neighborhood.weights(nb, centroids@coords)
-  write.csv(nbwl, file = "/data/doutorado-leonildo/data/Los-Angeles/WAIN/weight_matrix.csv")
-  print('Saved weight matrix')
+  
   # calculate and store the global autocorrelation
   res = global.autocorrelation(data = data, grid = grid, nbwl = nbwl, normalized = FALSE)
   write.table(x = res, file = paste0(folder, "/", output.files[1]), 
@@ -220,12 +219,7 @@ run.autocorrelation.agg <- function(data, grid, folder, output.files) {
   
   # spatial weight matrix
   nbwl = neighborhood.weights(nb, centroids@coords)
-  # Convert the listw object to a matrix
-  weights_matrix <- as(nbwl, "matrix")
   
-  # Write the matrix to a CSV file
-  write.csv(weights_matrix, file = "/data/doutorado-leonildo/data/Los-Angeles/WAIN/weight_matrix.csv")
-  print('Saved weight matrix')
   # calculate and store the global autocorrelation
   res = global.autocorrelation(data = data, grid = grid, nbwl = nbwl, normalized = FALSE)
   write.table(x = res, file = paste0(folder, "/", output.files[1]), 
@@ -245,7 +239,7 @@ run <- function(areal.unit.folder) {
   #cat("Processing ", areal.unit.folder, "\n")
   
   # filter the period
-
+  
   file = lapply(areal.unit.folder, paste0, paste0("/",input.file))[[1]]
   data = fread(file, sep = ",", dec = ".")[, c('w','AQI')]
   data = data.frame(data)
@@ -261,15 +255,15 @@ run <- function(areal.unit.folder) {
   run.autocorrelation.agg(data, grid, areal.unit.folder, 
                           gsub("\\?", "US_pollution", output.files))
   
-
+  
   select.attribute = unique(data$AQI)
   attribute.units =  unique(select.attribute)
   # bootsrapt resampling with 1000 replications (all attributes)
-  #for(p in seq(1, 1000)) {
-  # data2 = data[data$AQI %in% attribute.units[sample(length(attribute.units), replace = TRUE)], ]
-  # run.autocorrelation.agg(data2, grid, areal.unit.folder, 
-  #                         gsub("\\?", paste0("US_pollution_", p) , output.files))
-  #}
+  for(p in seq(1, 1000)) {
+    data2 = data[data$AQI %in% attribute.units[sample(length(attribute.units), replace = TRUE)], ]
+    run.autocorrelation.agg(data2, grid, areal.unit.folder, 
+                            gsub("\\?", paste0("US_pollution_", p) , output.files))
+  }
   
   rm(data)
   rm(grid)
@@ -285,12 +279,10 @@ prepare.folders <- function(path) {
   
   # get folders
   areal.unit.folders = list.dirs(path = ".", full.names = TRUE, recursive = TRUE)
-
   # include folders
   areal.unit.folders = areal.unit.folders[lapply(areal.unit.folders, 
                                                  function(x) length(grep("km", x, value=FALSE))) != 0]
   
-  print(areal.unit.folders)
   for(areal.unit.folder in areal.unit.folders) {
     if(!file.exists(paste0(areal.unit.folder, "/", input.file)))
       areal.unit.folders <- setdiff(areal.unit.folders, areal.unit.folder)
@@ -298,16 +290,15 @@ prepare.folders <- function(path) {
   
   if(!rewrite) {
     for(areal.unit.folder in areal.unit.folders) {
-     if(file.exists(paste0(areal.unit.folder, "/", "local_autocorrelation_US_pollution.csv")))
-       areal.unit.folders <- setdiff(areal.unit.folders, areal.unit.folder)
+      if(file.exists(paste0(areal.unit.folder, "/", "local_autocorrelation_US_pollution.csv")))
+        areal.unit.folders <- setdiff(areal.unit.folders, areal.unit.folder)
     }
   }
   
   # set number of cores
-    n.cores = detectCores(all.tests = FALSE, logical = TRUE)
-  #res = mclapply(areal.unit.folders, run, mc.cores = n.cores)
-  print(areal.unit.folders)
-  res = mclapply(areal.unit.folders, run, mc.cores = 2)
+  n.cores = detectCores(all.tests = FALSE, logical = TRUE)
+  res = mclapply(areal.unit.folders, run, mc.cores = n.cores)
+  #res = mclapply(areal.unit.folders, run, mc.cores = 1)
 }
 
 # ###########################################################
@@ -328,7 +319,7 @@ if (!require("spdep")) install.packages("spdep")
 if (!require("data.table")) install.packages("data.table")
 if (!require("bit")) install.packages("bit")
 
-rewrite = FALSE
+rewrite = TRUE
 input.file = c("final-file.csv")
 output.files = c("global_autocorrelation_?.csv", "local_autocorrelation_?.csv")
 

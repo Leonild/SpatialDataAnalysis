@@ -4,7 +4,7 @@
 ## Ph.D. Leonildo
 
 # define path of the current script
-path = "/home/leonildo/Desktop/Doc/data/"  # (for example)
+path = "/data/doutorado-leonildo/data/seasons/O3-2019/fall/" # (for example)
 setwd(path)
 
 # ###############################################################
@@ -26,6 +26,7 @@ read.autocorr <- function(file) {
     
     # global statistics
     split.folder = (strsplit(file, "/"))[[1]]
+    
     areal.unit = split.folder[-1][1]
     source = split.folder[-1][2]
     
@@ -68,7 +69,6 @@ read.data <- function(areal.unit.folder) {
 
 pareto.optimality <- function(df) {
   cat("Processing pareto optmality", "\n")
-  
   df.list = split(df, f = df$source)
   
   # run pareto front algorithm for each subset of data
@@ -80,7 +80,8 @@ pareto.optimality <- function(df) {
     
     # filter attr equal "n" that represent all values
     #df = df[df$attr == "or", ]
-    df = df[df$attr == "NO2AQI", ]
+    #df = df[df$attr == "NO2AQI", ]
+    df = df[df$attr == "AQI", ]
 
     # pareto front for all
     p = data.frame()
@@ -161,6 +162,6 @@ if (!require("plyr")) install.packages("plyr")
 
 # global variables 
 output.file = c("pareto_front_?.csv")
-output.folder = "/home/leonildo/Desktop/Doc/data/pareto_optimality/"
+output.folder = "/data/doutorado-leonildo/data/seasons/O3-2019/fall/pareto_optimality/"
 
 run()
